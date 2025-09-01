@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 public static class Arrays
 {
     /// <summary>
@@ -8,12 +10,20 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        /* Plan: 
+        1. create an array of double with the capacity of 'length'
+        2. use a for loop to interate from 0 to length
+        3. multiply the number by the index + 1 
+        4. return array
+        */
+        var result = new double[length];
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = number * (i + 1);
+        }
 
-        return []; // replace this return statement with your own
+
+        return result;
     }
 
     /// <summary>

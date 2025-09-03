@@ -35,9 +35,21 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        /* Plan:
+        1. set count and normalized amount variables
+        2. use GetRange to get the first and last 'amounts' in the list
+        3. clear the original list and add the ending 'amount' first the the beginning 'amount' second
+        */
+
+        int count = data.Count;
+
+        int amountNorm = amount % count;
+
+        List<int> endToFront = data.GetRange(count - amountNorm, amountNorm);
+        List<int> frontToEnd = data.GetRange(0, count - amountNorm);
+
+        data.Clear();
+        data.AddRange(endToFront);
+        data.AddRange(frontToEnd);
     }
 }

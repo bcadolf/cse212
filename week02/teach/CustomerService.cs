@@ -1,9 +1,14 @@
-﻿/// <summary>
+﻿using System.Runtime.Serialization;
+using System.Security.Cryptography;
+
+
+/// <summary>
 /// Maintain a Customer Service Queue.  Allows new customers to be 
 /// added and allows customers to be serviced.
 /// </summary>
 public class CustomerService {
-    public static void Run() {
+    public static void Run()
+    {
         // Example code to see what's in the customer service queue:
         // var cs = new CustomerService(10);
         // Console.WriteLine(cs);
@@ -11,30 +16,65 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: One call comes in and you take the customer
+        // Expected Result: one is qued and leave the que
         Console.WriteLine("Test 1");
+        var oops = new CustomerService(30);
+        oops.AddNewCustomer();
+        oops.ServeCustomer();
 
-        // Defect(s) Found: 
+        // Defect(s) Found: Serve customer is removing from queue before getting the customers info. 
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: add multiple customers and see if the queue serves them right.
+        // Expected Result: they are first in first out.
         Console.WriteLine("Test 2");
+        var cust2test = new CustomerService(4);
+        cust2test.AddNewCustomer();
+        cust2test.AddNewCustomer();
+        cust2test.ServeCustomer();
+        cust2test.ServeCustomer();
+
+
+        // Defect(s) Found: None
+
+        Console.WriteLine("=================");
+
+        // Test 3
+        // Scenario: Test Max queue size
+        // Expected Result: Error for adding more than 2
+        Console.WriteLine("Test 3");
+        var test3 = new CustomerService(2);
+        test3.AddNewCustomer();
+        test3.AddNewCustomer();
+        test3.AddNewCustomer();
+
+        // Defect(s) Found: needed >= for max size check 
+
+        Console.WriteLine("=================");
+
+        // Test 4
+        // Scenario: check empty queue
+        // Expected Result: error shown 
+        Console.WriteLine("Test 4");
+        var test4 = new CustomerService(4);
+        test4.ServeCustomer();
+
 
         // Defect(s) Found: 
 
         Console.WriteLine("=================");
 
-        // Add more Test Cases As Needed Below
+       
     }
 
     private readonly List<Customer> _queue = new();
     private readonly int _maxSize;
 
-    public CustomerService(int maxSize) {
+    public CustomerService(int maxSize)
+    {
         if (maxSize <= 0)
             _maxSize = 10;
         else
@@ -67,7 +107,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -87,10 +127,16 @@ public class CustomerService {
     /// <summary>
     /// Dequeue the next customer and display the information.
     /// </summary>
-    private void ServeCustomer() {
-        _queue.RemoveAt(0);
+    private void ServeCustomer()
+    {
+        if (_queue.Count == 0)
+        {
+            Console.WriteLine("No customers in the queue, find something else to do");
+            return;
+        }
         var customer = _queue[0];
         Console.WriteLine(customer);
+        _queue.RemoveAt(0);
     }
 
     /// <summary>
